@@ -34,9 +34,12 @@ export const getMockedPets = (count) => {
 export const postGenerateData = async (countUsers, countPets) => {
   const generatedUsers = getMockedUsers(countUsers);
   const generatedPets = getMockedPets(countPets);
-
-  await usersService.createMany(generatedUsers);
-  await petsService.createMany(generatedPets);
+  try {
+    await usersService.createMany(generatedUsers);
+    await petsService.createMany(generatedPets);
+  } catch (error) {
+    console.error("Error generating mock data:", error);
+  }
 
   return { users: generatedUsers, pets: generatedPets };
 };
