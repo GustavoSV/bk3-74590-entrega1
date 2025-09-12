@@ -1,0 +1,218 @@
+paths:
+  /api/pets/:
+    get:
+      summary: Obtiene la información de todos los mascotas
+      tags:
+        - Pets
+      responses:
+        "200":
+          description: Las mascotas fueron obtenidos correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#components/schemas/Pet'
+        "500":
+          description: Error interno del servidor
+    post:
+      summary: Crea una nueva mascota
+      tags:
+        - Pets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/createPet'
+      responses:
+        "201":
+          description: Mascota creada
+        "500":
+          description: Error interno del servidor
+  /api/pets/withimage:
+    post:
+      summary: Crea una nueva mascota con imagen
+      tags:
+        - Pets
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/createPetWithImage'
+      responses:
+        "201":
+          description: Mascota creada con imagen
+        "500":
+          description: Error interno del servidor
+  /api/pets/{uid}:
+    put:
+      summary: Actualiza una mascota por su Id
+      tags:
+        - Pets
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: Id de la mascota a actualizar
+        schema:
+          type: string        
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/createPet'
+      responses:
+        "200":
+          description: Mascota actualizada
+        "500":
+          description: Error interno del servidor
+    delete:
+      summary: Elimina una mascota por su Id
+      tags:
+        - Pets
+      parameters:
+      - name: uid
+        in: path
+        required: true
+        description: Id de la mascota a eliminar
+        schema:
+          type: string  
+      responses:
+        "200":
+          description: Mascota eliminada
+        "500":
+          description: Error interno del servidor
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: Id generado automáticamente
+        first_name:
+          type: string
+          description: Nombre del usuario
+        last_name:
+          type: string
+          description: Apellido del usuario
+        email:
+          type: string
+          description: Correo electrónico
+        password: 
+          type: string
+          description: Contraseña de acceso  
+        role:
+          type: string
+          description: Rol del usuario (user/admin)
+      example:
+        _id: ObjectId("689a9bf99bbcff2332ef01cf")
+        first_name: Jordi
+        last_name: Bustamante Quintanilla
+        email: jordi_BustamanteQuintanilla14@hotmail.com
+        password: 123
+        role: user
+    Pet:
+      type: object  
+      properties:
+        _id:
+          type: ObjectId
+          description: Id generado automáticamente
+        name: 
+          type: string
+          description: Nombre de la mascota
+        specie:
+          type: string
+          description: Especie de la mascota
+        birthDate:
+          type: string
+          format: date
+          description: Fecha de nacimiento de la mascota
+        adopted:
+          type: boolean
+          description: Estado de adopción (true si está adoptado, false si no)
+        owner:
+          type: mongoose.SchemaTypes.ObjectId
+          ref: "Users"
+        image:
+          type: string
+      example:
+        _id: ObjectId("689a9bf99bbcff2332ef01cf")
+        name: Firulais
+        specie: Perro
+        birthDate: 2020-05-10T00:00:00.000Z
+        adopted: false
+        owner: null
+        image: https://example.com/firulais.jpg
+  requestBodies:
+    createPet:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre de la mascota
+        specie:
+          type: string
+          description: Especie de la mascota
+        birthDate:
+          type: string
+          format: date
+          description: Fecha de nacimiento de la mascota
+        adopted:
+          type: boolean
+          description: Estado de adopción (true si está adoptado, false si no)
+        owner:
+          type: string
+          description: Id del dueño (opcional, null si no tiene dueño)
+        image:
+          type: string
+          format: binary
+          description: Imagen de la mascota (archivo) (opcional)
+      example:
+        name: Micifuz
+        specie: Gato
+        birthDate: 2022-03-24
+        adopted: false
+        owner: null
+      description: Datos para crear una mascota
+    createPetWithImage:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Nombre de la mascota
+        specie:
+          type: string
+          description: Especie de la mascota
+        birthDate:
+          type: string
+          format: date
+          description: Fecha de nacimiento de la mascota
+        adopted:
+          type: boolean
+          description: Estado de adopción (true si está adoptado, false si no)
+        owner:
+          type: string
+          description: Id del dueño (opcional, null si no tiene dueño)
+        image:
+          type: string
+          format: binary
+          description: Imagen de la mascota (archivo) 
+      example:
+        name: Micifuz
+        specie: Gato
+        birthDate: 2022-03-24
+        adopted: false
+        owner: null
+        image: https://example.com/micifuz.jpg
+      description: Datos para crear una mascota

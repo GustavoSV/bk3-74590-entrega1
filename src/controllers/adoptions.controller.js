@@ -2,7 +2,7 @@ import {
   adoptionsService,
   petsService,
   usersService,
-} from "../services/index.js";
+} from "../services/index.services.js";
 
 const getAllAdoptions = async (req, res) => {
   try {

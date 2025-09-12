@@ -1,6 +1,6 @@
 import { fakerES as fa } from "@faker-js/faker";
 import { createHash } from "../utils/hash.js";
-import { usersService, petsService } from "../services/index.js";
+import { usersService, petsService } from "../services/index.services.js";
 
 export const getMockedUsers = (count) => {
   const first_name = fa.person.firstName();
