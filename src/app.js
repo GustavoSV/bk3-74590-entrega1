@@ -1,4 +1,5 @@
-import { config } from "dotenv";
+// import { config } from "dotenv";
+import { config } from "./config/config.js";
 import express from "express";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
@@ -15,7 +16,7 @@ import mocksRouter from "./routes/mocks.router.js";
 import __dirname from "./utils.js";
 
 const app = express();
-config({ path: __dirname + "/.env" });
+// config({ path: __dirname + "/.env" });
 
 const swaggerOptions = {
   definition: {
@@ -33,8 +34,8 @@ const swaggerOptions = {
 const specs = swaggerJsdoc(swaggerOptions);
 app.use("/api/documentation", swaggerUi.serve, swaggerUi.setup(specs));
 
-const PORT = process.env.PORT || 8080;
-const connection = mongoose.connect(process.env.MONGO_URL);
+const PORT = config.PORT || 8080;
+const connection = mongoose.connect(config.MONGO_URL);
 
 app.use(express.json());
 app.use(cookieParser());
